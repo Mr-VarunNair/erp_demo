@@ -43,20 +43,27 @@
             cursor: pointer;
         }
         .login-container button:hover {
-            background-color: #ffffff;
-            color: #0aca23;
+            background-color: #008712;
+            color: #ffffff;
+            font-weight: bold;
         }
         .error {
             color: red;
             margin-bottom: 10px;
             display: none;
         }
+        .forgot_password{
+            color: rgb(47, 146, 233);
+        }
+        .forgot_password a{
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
         <i class="fa fa-user fa-5x"></i>
-        <h1>Login</h1>
+        <h1>LOGIN</h1>
        
         <select id="department">
             <option value="" disabled selected>Choose the department</option>
@@ -76,7 +83,9 @@
         <input type="text" id="username" placeholder="Username" required>
         <input type="password" id="password" placeholder="Password" required>
         <div class="error" id="error">Please fill out all fields.</div>
-        <button onclick="login()">Login</button>
+        <button onclick="login()">Submit</button>
+        <a href="#">Forget Password?</a>
+
     </div>
 
     <script>
