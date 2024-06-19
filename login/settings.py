@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'login.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'erp_project',
+        'NAME': 'erp',
         'HOST': 'localhost',
         'USER': 'root',
         'PASSWORD': 'root',
@@ -131,4 +131,4 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#AUTH_USER_MODEL = 'sign.User'
+AUTH_USER_MODEL = 'sign.CustomUser'

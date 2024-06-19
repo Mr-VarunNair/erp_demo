@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login
 #from . models import Asset_Login
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import User
+#from .models import User
 from django.contrib.auth import logout
 
 
@@ -38,7 +38,7 @@ def tenant_mng(request):
 
 
 
-
+'''
 def asset_login(request):
     if request.method == 'POST':
         username = request.POST['user_id']
@@ -57,19 +57,34 @@ def asset_login(request):
             messages.error(request, 'Invalid username or password')
     
     return render(request, 'asset_mng.html')
-
-def logout_view(request):
-    logout(request)
-    return redirect('asset_login')
-
-
+'''
 def admin_dashboard(request):
     username =request.user.username
     return render(request, 'admin.html', {'username': username})
 
-
-
-
 def viewer_dashboard(request):
     username = request.user.username
     return render(request, 'user.html', {'username': username})
+
+def asset_login(request):
+    if request.method == 'POST':
+        username = request.POST['user_id']
+        password = request.POST['password']
+        
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            if user.position == 'admin':
+                return redirect('admin_dashboard')
+            elif user.position == 'user':
+                return redirect('viewer_dashboard')
+            else:
+                messages.error(request, 'Unknown user position')
+        else:
+            messages.error(request, 'Invalid username or password')
+    
+    return render(request, 'asset_mng.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('asset_login')
