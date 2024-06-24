@@ -107,3 +107,23 @@ body {
 .login-button:hover {
     background-color: #34495e; 
 }
+
+.message-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.message-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.message-container li {
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: inline-block;
+}

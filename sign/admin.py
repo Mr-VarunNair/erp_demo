@@ -1,12 +1,6 @@
 from django.contrib import admin
-
-
-# Register your models here.
-#from . models import Asset_Login
-
-#admin.site.register(Asset_Login)
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+from .models import CustomUser,Asset_login
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
@@ -14,3 +8,7 @@ class CustomUserAdmin(UserAdmin):
     )
 
 admin.site.register(CustomUser, CustomUserAdmin)
+
+class AssetAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(Asset_login,AssetAdmin)

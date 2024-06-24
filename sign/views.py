@@ -1,12 +1,9 @@
 from django.contrib.auth import authenticate, login
-#from django.shortcuts import render
-#from django.core.exceptions import DoesNotExist
-#from django.contrib.auth.models import User
-#from . models import Asset_Login
 from django.shortcuts import render, redirect
 from django.contrib import messages
-#from .models import User
 from django.contrib.auth import logout
+from . models import Asset_login
+from .models import AssetTable
 
 
 
@@ -36,55 +33,91 @@ def tax_building(request):
 def tenant_mng(request):
     return render(request,'tenant_mng.html')
 
+def admin_dashboard(request):
+    username =request.session.get('username',None)
+    if not username:
+        return redirect('asset_login')
+    return render(request, 'asset_mng/admin.html', {'username': username})
 
+def head_dashboard(request):
+    username = request.session.get('username',None)
+    if not username:
+        return redirect('asset_login')
+    return render(request,'asset_mng/head.html',{'username' : username})
 
-'''
+def ciso_dashboard(request):
+    username = request.session.get('username',None)
+    if not username:
+        return redirect('asset_login')
+    return render(request,'asset_mng/ciso.html',{'username' : username})
+
+def asset_owner_dashboard(request):
+    username =request.session.get('username',None)
+    if not username:
+        return redirect('asset_login')
+    return render(request, 'asset_mng/asset_owner.html', {'username': username})
+
 def asset_login(request):
     if request.method == 'POST':
         username = request.POST['user_id']
         password = request.POST['password']
-        
+
         try:
-            user = User.objects.get(username=username, password=password)
-            if user:
+            user = Asset_login.objects.get(username=username, password=password)
+            if user is not None:
+                request.session['username'] = user.username
                 if user.position == 'admin':
                     return redirect('admin_dashboard')
-                elif user.position == 'user':
-                    return redirect('viewer_dashboard')
+                elif user.position == 'head':
+                    return redirect('head_dashboard')
+                elif user.position == 'asset_owner':
+                    return redirect('asset_owner_dashboard')
+                elif user.position == 'ciso':
+                    return redirect('ciso_dashboard')
                 else:
-                    messages.error(request, 'Unknown user position')
-        except User.DoesNotExist:
-            messages.error(request, 'Invalid username or password')
-    
-    return render(request, 'asset_mng.html')
-'''
-def admin_dashboard(request):
-    username =request.user.username
-    return render(request, 'admin.html', {'username': username})
-
-def viewer_dashboard(request):
-    username = request.user.username
-    return render(request, 'user.html', {'username': username})
-
-def asset_login(request):
-    if request.method == 'POST':
-        username = request.POST['user_id']
-        password = request.POST['password']
-        
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            if user.position == 'admin':
-                return redirect('admin_dashboard')
-            elif user.position == 'user':
-                return redirect('viewer_dashboard')
+                 messages.error(request, 'Unknown user position')
             else:
-                messages.error(request, 'Unknown user position')
-        else:
+                messages.error(request, 'Invalid username or password')
+        except Asset_login.DoesNotExist:
             messages.error(request, 'Invalid username or password')
     
-    return render(request, 'asset_mng.html')
+    return render(request, 'asset_mng/asset_mng.html')
+
+
+def privileges(request):
+    username =request.session.get('username',None)
+    if not username:
+        return redirect('asset_login')
+    return render(request,'asset_mng/privileges.html',{'username':username})
+
+def privilege_admin(request):
+    username =request.session.get('username',None)
+    if not username:
+        return redirect('asset_login')
+    return render(request,'asset_mng/privilege_admin.html',{'username':username})
+
+def privilege_ciso(request):
+    username =request.session.get('username',None)
+    if not username:
+        return redirect('asset_login')
+    return render(request,'asset_mng/privilege_ciso.html',{'username':username})
+
+def privilege_head(request):
+    username =request.session.get('username',None)
+    if not username:
+        return redirect('asset_login')
+    return render(request,'asset_mng/privilege_head.html',{'username':username})
+
+def privilege_asset_owner(request):
+    username =request.session.get('username',None)
+    if not username:
+        return redirect('asset_login')
+    return render(request,'asset_mng/privilege_asset_owner.html',{'username':username})
 
 def logout_view(request):
     logout(request)
     return redirect('asset_login')
+
+def asset_list(request):
+    users=AssetTable.objects.all()
+    return render(request,'asset_mng/asset_pro.html',{'users':users})

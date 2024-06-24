@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-abc123..." crossorigin="anonymous" />
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .left {
+            width: 20%;
+            background-color: #222;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            color: white;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #444;
+        }
+        .user-profile img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            margin-right: 10px;
+        }
+        .user-profile .username {
+            font-size: 40px;
+        }
+        .navigation {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .navigation li {
+            margin: 20px 0;
+        }
+        .navigation a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .navigation a:hover {
+            background-color: #444;
+        }
+       
+        .logout-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition-duration: 0.4s;
+            position: absolute;
+            bottom: 10px;
+            width:19.3%
+        }
+        .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+        .right {
+            width: 80%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow: auto;
+        }
+        .search-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .search-container input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .search-container .add-button {
+            padding: 8px 16px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-left: 10px;
+        }
+        .search-container .add-button:hover {
+            background-color: #0056b3;
+        }
+        .table-box {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .table-box h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #333;
+        }
+        .table-container {
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #575d64;
+            color: #ddd;
+        }
+        .edit-icon, .delete-icon {
+            color: #007bff;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 1% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+        }
+        .close {
+    color: #aaa;
+    float: right;
+    font-size: 32px; /* Increase font size for visibility */
+    font-weight: bold;
+    padding: 10px; /* Increase padding for larger clickable area */
+    cursor: pointer;
+    position: absolute;
+    top: 2px; /* Adjust position from top */
+    right: 445px; /* Adjust position from right */
+}
+
+.close:hover,
+.close:focus {
+    color: rgb(255, 0, 0);
+    text-decoration: none;
+}
+        .form-container {
+            width: 100%;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-header {
+            background-color: #6c757d;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            font-size: 24px;
+        }
+        .form-body {
+            padding: 10px;
+        }
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            flex-basis: 20%;
+            padding: 10px 0;
+        }
+        .form-group input, .form-group select {
+            flex-basis: 75%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-buttons button {
+            width: 48%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-buttons .save-btn {
+            background-color: #007bff;
+            color: white;
+        }
+        .form-buttons .reset-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        .dropdown {
+            display: none;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .dropdown li {
+            margin: 10px 0;
+        }
+        .dropdown a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .dropdown a:hover, .dropdown a:focus {
+            background-color: #444;
+        }
+        .show-dropdown .dropdown {
+            display: block;
+        }
+        .show-dropdown .navigation > li:not(.settings) {
+            display: none;
+        }
+        .show-dropdown .settings {
+            margin-top: 0;
+        }
+        .settings i.dropdown-icon {
+            margin-left: 10px;
+            transition: transform 0.3s;
+        }
+        .show-dropdown .settings i.dropdown-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="left">
+        <div class="user-profile">
+            <img src="https://static.vecteezy.com/system/resources/thumbnails/009/636/683/small_2x/admin-3d-illustration-icon-png.png" alt="User Icon">
+            <div class="username">sgk</div>
+        </div>
+        <ul class="navigation" role="navigation">
+            <li><a href="{% url 'admin_dashboard' %}" aria-label="Dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="{% url 'asset_list' %}" aria-label="Assets"><i class="fas fa-box"></i> Assets</a></li>
+            <li><a href="#"><i class="fas fa-users" aria-hidden="true"></i> Users</a></li>
+            <li><a href="#" aria-label="Employee"><i class="fas fa-user-tie"></i> Employee</a></li>
+            <li><a href="#" aria-label="assignwork"><i class="fa fa-clipboard-list"></i>Assign Work</a></li>
+            <li><a href="#" aria-label="Reports"><i class="fas fa-chart-bar"></i> Reports</a></li>
+            <li class="settings"><a href="#" aria-label="Settings" id="settings-link"><i class="fas fa-cog"></i> Settings <i class="fas fa-chevron-down dropdown-icon"></i></a>
+                <ul class="dropdown" id="settings-dropdown">
+                    <li><a href="#" aria-label="Roles"><i class="fas fa-user-tag"></i> Roles</a></li>
+                    <li><a href="#" aria-label="Privileges"><i class="fas fa-user-shield"></i> Privileges</a></li>
+                    <li><a href="#" aria-label="Departments"><i class="fas fa-building"></i> Departments</a></li>
+                    <li><a href="#" aria-label="Categories"><i class="fas fa-th-list"></i> Categories</a></li>
+                    <li><a href="#" aria-label="Locations"><i class="fas fa-map-marker-alt"></i> Locations</a></li>
+                </ul>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </div>
+    <div class="right">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search by Name..." aria-label="Search">
+            <button class="add-button" aria-label="Add User" id="addUserButton"><i class="fas fa-plus"></i> Add</button>
+        </div>
+        <div class="table-box">
+            <h2>User List</h2>
+            <div class="table-container">
+                <table id="AssetTable" role="table">
+                    <thead>
+                        <tr>
+                            <th>Serial No</th>
+                            <th>Asset Name</th>
+                            <th>Asset Type</th>
+                            <th>Status</th>
+                            <th>ItemCode</th>
+                            <th>Assigned To</th>
+                            <th>Images</th>
+                            <th>View</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for AssetTable in users %}
+                        <tr>
+                            <td>{{AssetTable.id}}</td>
+                            <td>{{AssetTable.Asset_name}}</td>
+                            <td>{{AssetTable.Asset_type}}</td>
+                            <td>{{AssetTable.Status}}</td>
+                            <td>{{AssetTable.Item_code}}</td>
+                            <td>{{AssetTable.Assigned_To}}</td>
+                            <td>{{AssetTable.images}}</td>
+                            <td class="edit-icon"><i class="fas fa-eye"></i></td>
+                            <td class="edit-icon"><i class="fas fa-edit"></i></td>
+                            <td class="delete-icon"><i class="fas fa-trash"></i></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="form-container">
+                <div class="form-header">
+                    Add Asset
+                </div>
+                <div class="form-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="asset">Asset Type:*</label>
+                            <input type="text" id="name" name="name" placeholder="Asset Type">
+                        </div>
+                        <div class="form-group">
+                            <label for="asset">Asset Name:*</label>
+                            <input type="text" id="name" name="name" placeholder="Asset Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="asset">Serial Number:</label>
+                            <input type="text" id="name" name="name" placeholder="Serial Number">
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Model Number</label>
+                            <input type="text" id="modelNumber" name="modelNumber" placeholder="Model Number">
+                        </div>
+                        <div class="form-group">
+                            <label for="asset">Item Code *</label>
+                            <input type="text" id="name" name="name" placeholder="ItemCode">
+                        </div>
+                        <div class="form-group">
+                            <label for="asset">Machine & OS Configuration</label>
+                            <input type="address" id="name" name="name" placeholder="Machine & OS">
+                        </div>
+                        <div class="form-group">
+                            <label for="movable">Movable/Nonmovable</label>
+                            
+                            <select id="movable" name="movable">
+                                <option value="">movable</option>
+                                <option value="">nonmovable</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="asset">Status*</label>
+                            
+                            <select id="status" name="status">
+                                <option value="">Active</option>
+                                <option value="">InActive</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="asset">Vender/Supplier</label>
+                            <input type="address" id="name" name="name" placeholder="Machine & OS">
+                        </div>
+                        <div class="form-group">
+                            <label for="maintain">Maintenance</label>
+                            <select id="maintain" name="maintain">
+                                <option value="">AMC</option>
+                                <option value="">Warranty</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="asset">price</label>
+                            <input type="text" id="name" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="year">Year Of Purchasing</label>
+                            <input type="date" id="date" name="date">
+                        </div>
+                        <div class="form-group">
+                            <label for="year">Year Of Expiry</label>
+                            <input type="date" id="date" name="date">
+                        </div>
+                        <div class="form-group">
+                            <label for="asset">Age/Life</label>
+                            <input type="text" id="name" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Supporting Docs</label>
+                            <input type="file" id="myFile" name="filename">
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Asset Images</label>
+                            <input type="file" id="myFile" name="filename">
+                        </div>
+                        <div class="form-group">
+                            <label for="asset">Notes</label>
+                            <input type="address" id="name" name="name" placeholder="Notes">
+                        </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" placeholder="Password">
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="save-btn">Save</button>
+                            <button type="reset" class="reset-btn">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+         document.getElementById('settings-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.left').classList.toggle('show-dropdown');
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const AssetTable = document.getElementById('AssetTable').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+            searchInput.addEventListener('input', filterTable);
+
+            function filterTable() {
+                const filter = searchInput.value.toUpperCase();
+                for (let i = 0; i < AssetTable.length; i++) {
+                    const nameColumn = AssetTable[i].getElementsByTagName('td')[1];
+                    if (nameColumn) {
+                        const txtValue = nameColumn.textContent || nameColumn.innerText;
+                        AssetTable[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? '' : 'none';
+                    }
+                }
+            }
+
+            const modal = document.getElementById('myModal');
+            const btn = document.getElementById('addUserButton');
+            const span = document.getElementsByClassName('close')[0];
+
+            btn.onclick = function() {
+                modal.style.display = 'block';
+            }
+
+            span.onclick = function() {
+                modal.style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-abc123..." crossorigin="anonymous" />
-    <title>Admin Dashboard</title>
+    <title>Asset Owner Dashboard</title>
     <style>
         body {
             margin: 0;
@@ -128,16 +128,13 @@
 <body>
     <div class="left">
         <div class="user-profile">
-            <img src="https://static.vecteezy.com/system/resources/thumbnails/009/636/683/small_2x/admin-3d-illustration-icon-png.png" alt="User Icon">
+            <img src="https://clipart-library.com/img/1951930.png" alt="User Icon">
             <div class="username">{{username.upper}}</div>
         </div>
         <ul class="navigation" role="navigation">
             <li><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             <li><a href="#"><i class="fas fa-box"></i> Assets</a></li>
-            <li><a href="#"><i class="fas fa-users"></i> Users</a></li>
-            <li><a href="#"><i class="fas fa-user-tie"></i> Employee</a></li>
             <li><a href="#"><i class="fas fa-chart-bar"></i> Reports</a></li>
-            <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
         </ul>
         <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
@@ -163,7 +160,6 @@
                 <p>Total Assets</p>
             </div>
             <div class="stat-box">
-                <i class="fas fa-tools"></i>
                 <h2>14</h2>
                 <p>Maintenance Checks</p>
             </div>

@@ -24,6 +24,20 @@ urlpatterns = [
     #path('', views.login, name='login'),
     path('asset_mng/',views.asset_login,name='asset_login'),
     path('admins/', views.admin_dashboard, name='admin_dashboard'),
-    path('viewer/', views.viewer_dashboard, name='viewer_dashboard'),
+
+    path('privileges/',views.privileges,name='privileges'),
+    path('privilege_admin/',views.privilege_admin,name='privilege_admin'),
+    path('privilege_ciso/',views.privilege_ciso,name='privilege_ciso'),
+    path('privilege_head/',views.privilege_head,name='privilege_head'),
+    path('privilege_asset_owner/',views.privilege_asset_owner,name='privilege_asset_owner'),
+
+
+    path('asset_owner_dashboard/', views.asset_owner_dashboard, name='asset_owner_dashboard'),
+
+    path('head_dashboard/',views.head_dashboard,name='head_dashboard'),
+
+    path('ciso_dashboard/',views.ciso_dashboard,name='ciso_dashboard'),
     path('logout/', views.logout_view, name='logout'),
+    path('asset_list/',views.asset_list,name='asset_list'),
+    
 ]
