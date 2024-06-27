@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User List</title>
+    <title>Asset List</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-abc123..." crossorigin="anonymous" />
     <style>
         body {
@@ -139,8 +139,13 @@
             background-color: #575d64;
             color: #ddd;
         }
-        .edit-icon, .delete-icon {
-            color: #007bff;
+        .edit-icon{
+            color: #1f04e6;
+            cursor: pointer;
+            text-align: center;
+        }
+        .delete-icon {
+            color: #db0739;
             cursor: pointer;
             text-align: center;
         }
@@ -273,6 +278,46 @@
         .show-dropdown .settings i.dropdown-icon {
             transform: rotate(180deg);
         }
+        form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.form-group {
+    flex: 1 1 calc(50% - 20px);
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-buttons {
+    flex: 1 1 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
     </style>
 </head>
 <body>
